@@ -154,6 +154,13 @@ You may also need to use Multiplexors/I2C expanders for some boards so shop acco
 ### **Building and Flashing the Firmware**
 Once the hardware is wired and the software dependencies are installed, you can build and flash the firmware to the device.
 
+## **Games (CYD build)**
+A PlatformIO firmware targeting the **ESP32-2432S028R "Cheap Yellow Display"** lives in [`firmware/`](firmware/). It
+provides a touch-menu with three games — noughts & crosses, Snake and Wordle — built on a small, extensible `App`
+framework (`enter()` / `tick()` / `done`) that further tools can plug into as additional apps. It builds and flashes
+over USB today; see [`firmware/README.md`](firmware/README.md) for setup, first-boot steps and the optional
+Wordle word/stats server in [`wordle-server/`](wordle-server/).
+
 ## **Contributing**
 Contributions to this project are welcome. If you have ideas for new features, improvements, or additional modules, feel free to create an issue or submit a pull request.
 

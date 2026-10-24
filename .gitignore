@@ -1,0 +1,11 @@
+# PlatformIO build output
+.pio/
+firmware/.pio/
+
+# Editor / IDE
+.vscode/
+
+# Python + server runtime
+__pycache__/
+*.pyc
+wordle-server/appdata/

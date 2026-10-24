@@ -1,0 +1,15 @@
+# docker compose up -d --build
+# On Unraid: use the Compose Manager plugin, or build the image once and add it as a normal container
+# (see README.md in the parent folder).
+services:
+  cyd-wordle:
+    build: .
+    container_name: cyd-wordle
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+    environment:
+      TZ_NAME: Australia/Melbourne
+    volumes:
+      # on Unraid: /mnt/user/appdata/cyd-wordle
+      - ./appdata:/data
