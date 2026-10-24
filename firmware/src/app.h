@@ -12,3 +12,4 @@ App *makeTicTacToe();
 App *makeSnake();
 App *makeWordle();
 App *makeSettings();
+App *makeWifiTools();   // hidden: long-press the title on the menu

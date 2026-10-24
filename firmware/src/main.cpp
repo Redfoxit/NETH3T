@@ -27,6 +27,12 @@ Tile tiles[4] = {
 App *current = nullptr;
 bool lastWifi = false;
 
+// Hidden: holding the title (top-left, left of the status text) opens the WiFi tools.
+const Rect TITLE_RECT = {0, 0, 148, 30};
+const uint32_t TITLE_HOLD_MS = 1500;
+bool titleHolding = false;
+uint32_t titleHoldStart = 0;
+
 void drawIcon(int i) {
   const Rect &r = tiles[i].r;
   int cx = r.cx(), top = r.y + 8;
@@ -83,6 +89,22 @@ void drawMenu() {
 
 void menuTick() {
   if (net::connected() != lastWifi) drawStatus();
+
+  // Secret long-press on the title -> hidden WiFi tools (runs on a held touch, not a tap).
+  if (touch.down() && TITLE_RECT.hit(touch.x(), touch.y())) {
+    if (!titleHolding) {
+      titleHolding = true;
+      titleHoldStart = millis();
+    } else if (millis() - titleHoldStart >= TITLE_HOLD_MS) {
+      titleHolding = false;
+      sound::click();
+      current = makeWifiTools();
+      current->enter();
+    }
+    return;
+  }
+  titleHolding = false;
+
   if (!touch.pressed()) return;
   for (int i = 0; i < 4; i++) {
     if (!tiles[i].r.hit(touch.x(), touch.y())) continue;
