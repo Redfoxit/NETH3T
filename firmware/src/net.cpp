@@ -81,18 +81,21 @@ void runPortal() {
 }
 
 void begin() {
+  WiFi.persistent(true);   // make sure saved credentials get written to NVS
   WiFi.mode(WIFI_STA);
   WiFi.setHostname(HOSTNAME);
   WiFi.setAutoReconnect(true);
-  WiFi.begin();   // uses credentials saved in flash, if any
 
-  bool haveCreds = WiFi.SSID().length() > 0;
+  // Ask the stored config directly whether we have creds. WiFi.SSID() is empty
+  // until a connection completes, so it can't be used to detect saved creds.
+  WiFiManager wm;
+  bool haveCreds = wm.getWiFiIsSaved();
   if (haveCreds) {
-    centerMessage("Connecting to WiFi...", WiFi.SSID().c_str());
+    WiFi.begin();   // uses credentials saved in flash
+    centerMessage("Connecting to WiFi...", wm.getWiFiSSID().c_str());
     uint32_t t0 = millis();
     while (WiFi.status() != WL_CONNECTED && millis() - t0 < 15000) delay(100);
-  }
-  if (WiFi.status() != WL_CONNECTED && !haveCreds) {
+  } else {
     runPortal();   // first boot: nothing saved yet
   }
   if (WiFi.status() == WL_CONNECTED) {
